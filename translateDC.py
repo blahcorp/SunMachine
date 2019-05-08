@@ -8,12 +8,21 @@ para automatizar la carga
 
 import os
 
+def clear():
+	os.system('clear')
+
+def cwd():
+	a = os.getcwd()
+	return a
+
+
+os.chdir(cwd())
+
 inputFile = "CostoBolsa.txt"
-#inputFile = "/home/h4k0/Descargas/SunMachine/CostoBolsa.txt"
-#outputFile = "insertChart.sql"
+outputFile = "insertChart.sql"
 
 ifstream = open(inputFile, 'r')
-#ofstream = open(outputFile, 'w')
+ofstream = open(outputFile, 'w')
 
 for aline in ifstream:
 	print(aline, end='')
