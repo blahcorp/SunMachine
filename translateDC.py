@@ -21,9 +21,11 @@ months= {
 	        }
 inputFile = "CostOnStack.txt"
 outputFile = "insertChart.sql"
+linea = "DELETE FROM sunpad;"
+lineb = "INSERT INTO 'sunpad' VALUES ('"
 
-def clear():
-	os.system('clear')
+def sysDir(chdir):
+	os.chdir(chdir)
 
 def cwd():
 	a = os.getcwd()
@@ -34,7 +36,6 @@ def transMonth(MM):
 	return mm
 
 def translate(line):
-	#line = str(line)
 	DD   = line[:2]
 	MM   = line[3:6]
 	YYYY = line[7:11]
@@ -42,18 +43,27 @@ def translate(line):
 	date = YYYY + '-' + month + '-' + DD
 	return date
 
-os.chdir(cwd())
-ifstream = open(inputFile, 'r')
-ofstream = open(outputFile, 'w')
+def valueOnStack(line):
+	line = line[12:18]
+	char = line[5]
+	if char.isnumeric():
+		value = str(line[:6])
+	else:
+		value = str(line[:5])
+	return value
 
-for aline in ifstream:
-	line = translate(aline)
-	print(line)
+def deepTranslate(iFile, oFile):
+	ifstream = open(iFile, 'r')
+	ofstream = open(oFile, 'w')
+	ofstream.write(linea + "\n\n")
+	for aline in ifstream:
+		line = translate(aline)
+		valueOS = valueOnStack(aline)
+		line = lineb + line + "', '" + valueOS +"');"
+		ofstream.write(line + "\n")
+		print(line)
+	ifstream.close()
+	ofstream.close()
 
-
-
-
-
-
-
-
+sysDir(cwd())
+deepTranslate(inputFile, outputFile)
