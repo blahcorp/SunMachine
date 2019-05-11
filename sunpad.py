@@ -22,7 +22,8 @@ msga = """
 #                                                          H4K0@BlahCorp      #
 #                                                                             #
 ###############################################################################
-	   """
+	   
+Presione enter para continuar..."""
 
 msgb = """
        ##############################################################
@@ -32,13 +33,9 @@ msgb = """
        #   2 -> Calcular perdida por temperatura                    #
        #   3 -> Diseñar Sistema Off-Grid                            #
        #   4 -> Diseñar Sitema On-Grid / Grid-Tie                   #
-       #   5 -> Calcular el banco de baterias
+       #   5 -> Calcular el banco de baterias                       #
        #                                                            #
        ##############################################################
-╱╲╱╲╳╳╳
-╲╱╲╱╳╳╳
-╱╲╱╲╳╳╳
-       
 	   """
 
 msginvoice = """
@@ -106,9 +103,8 @@ def clear():
 
 def formLine(text):
     print(text, end=' ')
-    z = int(input())
+    z = input()
     return z
-
 
 def invoiceCalc():
     print (msginvoice)
@@ -127,9 +123,7 @@ def heatLossCalc():
     d = formLine("Coeficiente de temperatura VOC del panel:\t")
     e = formLine("VOC del panel:\t")
     print(msgsharp)
-    x = lossHeatForm(a, c, b, d, e)
-    print ("Perdida por Voltio: \t", x, "V.")
-    print("Perdida total de VOC:\t", (x * e))
+    lossHeatForm(a, c, b, d, e)
 
 def offGridDesign():
     print (msgOffGrid)
@@ -147,17 +141,16 @@ def onGridDesig():
     d = formLine("Potencia del panel:\t")
     print (a / b + c + d)
 
-
 def batteryCalc():
     print(msgBatteryCalc)
 
 def lossHeatForm(ta, gi, tonc, ctvoc, voc):
-    x = (ta + (gi * ((tonc - 20)/800)))
-    x = (x - 25)
-    print("Los paneles están trabajando ", x, "°C sobre el ideal STC.")
-    ctxv = (ctvoc * ta)
-    return ctxv
-
+    tc = (float(ta) + (float(gi) * ((float(tonc)-20.0)/800)))
+    scstd = tc - 25.0
+    ctxv = (float(ctvoc) * float(ta))/1000
+    print("Los paneles están trabajando " + str(scstd) + "°C sobre el ideal STC.")
+    print ("Pérdida por Voltio: " + str(format(ctxv, '.2f')) + "V.")
+    print("Pérdida total de VOC: " + str(format(((ctxv * float(voc))*10), '.2f')) + "V.")
 
 usos = {
 		1:invoiceCalc,
@@ -168,16 +161,15 @@ usos = {
 		}
 
 ###################################################
-#          Start Printing in screen               # 
+#         Start Printing in screen (main)         # 
 ###################################################
 clear()
-print (msga)
-input("Presione enter para continuar...")
+input(msga)
 clear()
 print (msgb)
 ###################################################
 a = int(input("Elija una operacion: "))
 usos[a]()
 print (msgc)
-print ("#####################")
+print ("Gracias y Chau! :D")
 ################################################### 
